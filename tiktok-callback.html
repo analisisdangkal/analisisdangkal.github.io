@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Andal Login TikTok</title><style>
+:root{--bg:#fffaf0;--fg:#1D2326}
+@media (prefers-color-scheme:dark){:root{--bg:#1D2326;--fg:#f4f1ea}}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:640px;margin:0 auto;padding:48px 16px}
+</style></head><body><main>
+<h1>Andal: login TikTok</h1>
+<p id="pesan">Meneruskan ke aplikasi Andal di komputer ini… / Forwarding to the Andal app on this computer…</p>
+<script>
+// Redirect OAuth TikTok -> server login lokal `andal login-tiktok` (TikTok tidak menerima redirect localhost).
+// state = "<port>-<acak>"; hanya port angka di 127.0.0.1 yang dituju, kode tidak pernah dikirim ke tempat lain.
+(function () {
+  var q = new URLSearchParams(location.search), state = q.get("state") || "", port = state.split("-")[0];
+  if (!/^\d{4,5}$/.test(port)) { document.getElementById("pesan").textContent = "Permintaan tidak dikenal. / Unknown request."; return; }
+  var p = new URLSearchParams();
+  ["code", "state", "error", "error_description", "scopes"].forEach(function (k) { if (q.get(k)) p.set(k, q.get(k)); });
+  location.replace("http://127.0.0.1:" + port + "/?" + p.toString());
+})();
+</script>
+</main></body></html>
